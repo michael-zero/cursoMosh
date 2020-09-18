@@ -2,28 +2,26 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image, Alert, Platform, Switch} from 'react-native';
 import Screen from './src/components/Screen';
 import Constants from 'expo-constants'
-import ImageInput from './src/components/ImageInput'
-import * as Permissions from 'expo-permissions'
-import * as ImagePicker from 'expo-image-picker'
+import ImageInputList from './src/components/ImageInputList'
+
 
 export default function App() {
-  const [imageUri, setImageUri] = React.useState();
+  const [imageUris, setImageUris] = React.useState([]);
 
-  const requestPermission = async () => {
-     const {granted} = await ImagePicker.getCameraRollPermissionsAsync();
-     
-     if(!granted){
-       alert('Você precisa dar permissão')
-     }
+  const handleAdd = (uri) => {
+    setImageUris([...imageUris, uri])
   }
 
-  React.useEffect(() => {
-    requestPermission()
-  }, [])
-
+  const handleRemove = uri => {
+    setImageUris(imageUris.filter(imageUri => imageUri !== uri))
+  }
+ 
   return (
       <Screen>
-        <ImageInput imageUri={imageUri} onChangeImage={uri => setImageUri(uri)}/>
+        <ImageInputList imageUris={imageUris} 
+        onAddImage={handleAdd}
+        onRemoveImage={handleRemove}
+        />
       </Screen>
     )
 }

@@ -6,6 +6,19 @@ import * as ImagePicker from 'expo-image-picker'
 
 const ImageInput = ({imageUri, onChangeImage}) => {
 
+    React.useEffect( () => {
+        requestPermission() 
+    }, [])
+
+    const requestPermission = async () => {
+        const {granted} = await ImagePicker.getCameraRollPermissionsAsync();
+        
+        if(!granted){
+          alert('Você precisa dar permissão')
+        }
+     }
+
+
     const handlePress = () => {
         if(!imageUri) selectImage()
         else Alert.alert('Delete', 'Tem certeza que deseja deletar esta imagem?', [
